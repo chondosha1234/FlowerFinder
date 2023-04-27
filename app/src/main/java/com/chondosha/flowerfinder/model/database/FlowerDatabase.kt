@@ -8,5 +8,5 @@ import com.chondosha.flowerfinder.model.FlowerEntry
 @Database(entities = [FlowerEntry::class], version=1)
 @TypeConverters(FlowerTypeConverters::class)
 abstract class FlowerDatabase: RoomDatabase() {
-    abstract fun photoDao(): FlowerDao
+    abstract fun flowerDao(): FlowerDao
 }
