@@ -15,7 +15,7 @@ import com.chondosha.flowerfinder.R
 import com.chondosha.flowerfinder.model.FlowerEntry
 
 @Composable
-fun PhotoEntryCell(
+fun FlowerEntryCell(
     flowerEntry: FlowerEntry,
     modifier: Modifier = Modifier,
     onClickEntry: () -> Unit
