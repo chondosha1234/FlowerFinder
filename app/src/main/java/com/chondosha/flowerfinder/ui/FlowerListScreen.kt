@@ -4,11 +4,16 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -19,7 +24,6 @@ import com.chondosha.flowerfinder.FlowerListViewModelFactory
 import com.chondosha.flowerfinder.LocalRepository
 import com.chondosha.flowerfinder.R
 import com.chondosha.flowerfinder.model.FlowerEntry
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
@@ -29,16 +33,32 @@ fun PhotoListScreen(
     modifier: Modifier = Modifier,
     onNavigateToDetail: () -> Unit
 ) {
-    Column {
-        PhotoList(
-            onNavigateToDetail = onNavigateToDetail
-        )
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = { Text("FlowerFinder") }
+            )
+        },
+        content = { padding ->
+            Column(
+                modifier = Modifier
+                    .padding(padding),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                PhotoList(
+                    onNavigateToDetail = onNavigateToDetail,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = true)
+                )
 
-        takePictureButton(
-            modifier = modifier
-        )
-    }
-
+                TakePictureButton(
+                    modifier = modifier
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -61,22 +81,11 @@ fun PhotoList(
                 onNavigateToDetail()
             }
         }
-        item {
-            FlowerEntryCell(
-                flowerEntry = FlowerEntry(
-                    id = UUID.randomUUID(),
-                    label = "A flower",
-                    date = Date()
-                )
-            ) {
-                onNavigateToDetail()
-            }
-        }
     }
 }
 
 @Composable
-fun takePictureButton(
+fun TakePictureButton(
     modifier: Modifier = Modifier,
     flowerListViewModel: FlowerListViewModel = viewModel(
         factory = FlowerListViewModelFactory(LocalRepository.current)
@@ -103,6 +112,7 @@ fun takePictureButton(
         }
     )
     val context = LocalContext.current
+
     Button(
         onClick = {
             photoName = "IMG_${Date()}.JPG"
