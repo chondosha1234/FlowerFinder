@@ -29,9 +29,9 @@ import java.io.File
 import java.util.*
 
 @Composable
-fun PhotoListScreen(
+fun FlowerListScreen(
     modifier: Modifier = Modifier,
-    onNavigateToDetail: () -> Unit
+    onNavigateToDetail: (UUID) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -46,7 +46,7 @@ fun PhotoListScreen(
                     .padding(padding),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                PhotoList(
+                FlowerList(
                     onNavigateToDetail = onNavigateToDetail,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -62,12 +62,12 @@ fun PhotoListScreen(
 }
 
 @Composable
-fun PhotoList(
+fun FlowerList(
     modifier: Modifier = Modifier,
     flowerListViewModel: FlowerListViewModel = viewModel(
         factory = FlowerListViewModelFactory(LocalRepository.current)
     ),
-    onNavigateToDetail: () -> Unit
+    onNavigateToDetail: (UUID) -> Unit
 ) {
     val flowers by flowerListViewModel.flowers.collectAsState(emptyList())
 
@@ -78,7 +78,7 @@ fun PhotoList(
             FlowerEntryCell(
                 flowerEntry = flower
             ) {
-                onNavigateToDetail()
+                onNavigateToDetail(flower.id)
             }
         }
     }
