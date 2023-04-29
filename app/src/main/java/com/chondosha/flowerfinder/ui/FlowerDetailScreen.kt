@@ -59,15 +59,15 @@ fun FlowerDetailScreen(
                 )
 
                 Text(
-                    text = "There is a 100% chance that this picture shows a flower"
+                    text = "There is a ${flower?.percentage}% chance that this picture shows a ${flower?.label}"
                 )
 
                 Text(
-                    text = "This will be a wiki link to that flower"
+                    text = "For more information about this type of Flower check out the wikipedia page:"
                 )
 
                 Text(
-                    text = "The flowerEntry is ${flower?.label}"
+                    text = "https://en.wikipedia.org/w/index.php?search=${flower?.label}"
                 )
             }
         }

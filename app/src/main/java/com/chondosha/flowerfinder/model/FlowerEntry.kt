@@ -8,6 +8,7 @@ import java.util.*
 data class FlowerEntry(
     @PrimaryKey val id: UUID,
     val label: String,
+    val percentage: Float,
     val date: Date,
     val wiki:String? = null,
     val photoFileName:String? = null
