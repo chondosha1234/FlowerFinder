@@ -5,12 +5,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -19,13 +18,16 @@ import androidx.core.net.toUri
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.chondosha.flowerfinder.*
+import com.chondosha.flowerfinder.R
+import kotlinx.coroutines.launch
 import java.io.File
 
 
 @Composable
 fun FlowerDetailScreen(
     modifier: Modifier = Modifier,
-    flowerId: String?
+    flowerId: String?,
+    onNavigateToList: () -> Unit
 ) {
 
     val flowerDetailViewModel: FlowerDetailViewModel = viewModel(
@@ -33,6 +35,8 @@ fun FlowerDetailScreen(
     )
 
     val flower by flowerDetailViewModel.flower.collectAsState()
+
+    val coroutineScope = rememberCoroutineScope()
 
     val imagePainter = rememberAsyncImagePainter(
         model = flower?.photoFileName?.let {
@@ -45,7 +49,20 @@ fun FlowerDetailScreen(
         modifier = Modifier,
         topBar = {
             TopAppBar(
-                title = { Text("FlowerFinder") }
+                title = { Text("FlowerFinder") },
+                actions = {
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            flower?.let { flowerDetailViewModel.deleteFlowerEntry(it) }
+                            onNavigateToList()
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(R.drawable.delete_button),
+                            contentDescription = "Delete"
+                        )
+                    }
+                }
             )
         },
         content = { padding ->

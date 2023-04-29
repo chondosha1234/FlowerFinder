@@ -37,7 +37,10 @@ fun Navigation(
         ) { backStackEntry ->
             FlowerDetailScreen(
                 modifier = Modifier,
-                flowerId = backStackEntry.arguments?.getString("flowerEntryId")
+                flowerId = backStackEntry.arguments?.getString("flowerEntryId"),
+                onNavigateToList = {
+                    navController.navigate("flower_list")
+                }
             )
         }
     }
