@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,7 +28,8 @@ import java.io.File
 fun FlowerDetailScreen(
     modifier: Modifier = Modifier,
     flowerId: String?,
-    onNavigateToList: () -> Unit
+    onNavigateToList: () -> Unit,
+    onNavigateToWiki: (String) -> Unit
 ) {
 
     val flowerDetailViewModel: FlowerDetailViewModel = viewModel(
@@ -72,20 +74,30 @@ fun FlowerDetailScreen(
                 Image(
                     painter = imagePainter,
                     contentDescription = null,
-                    modifier = Modifier.size(64.dp)
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .size(256.dp)
+                        .padding(16.dp)
                 )
 
                 Text(
-                    text = "There is a ${flower?.percentage}% chance that this picture shows a ${flower?.label}"
+                    text = "There is a ${flower?.percentage}% chance that this picture shows a ${flower?.label}",
+                    modifier = modifier.padding(16.dp)
                 )
 
                 Text(
-                    text = "For more information about this type of Flower check out the wikipedia page:"
+                    text = "For more information about this type of Flower check out the wikipedia page:",
+                    modifier = modifier.padding(16.dp)
                 )
 
-                Text(
-                    text = "https://en.wikipedia.org/w/index.php?search=${flower?.label}"
-                )
+                Button(
+                    onClick = {
+                        onNavigateToWiki("${flower?.label}")
+                    },
+                    modifier = modifier.padding(16.dp)
+                ) {
+                    Text(text = "Go To Wiki")
+                }
             }
         }
     )
