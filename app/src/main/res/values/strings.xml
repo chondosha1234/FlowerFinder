@@ -3,4 +3,9 @@
 
     <string name="flower_label">Type of flower: %1$s </string>
 
+    <string name="about_section">This is the about section</string>
+    <string name="change_themes">Change Themes</string>
+    <string name="change_notifications">Change notification settings</string>
+    <string name="no_match">There was no flower found in the picture.  Either there is actually no flower or there was a failure in the machine.
+    You can try to take another picture closer or more clearly, or report it as a problem!</string>
 </resources>

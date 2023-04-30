@@ -37,6 +37,7 @@ private val LABELS = listOf("Daisy", "Dandelion", "Rose", "Sunflower", "Tulip")
 @Composable
 fun CameraButton(
     modifier: Modifier = Modifier,
+    onNavigateToDetail: (UUID) -> Unit,
     flowerListViewModel: FlowerListViewModel = viewModel(
         factory = FlowerListViewModelFactory(LocalRepository.current)
     )
@@ -64,6 +65,7 @@ fun CameraButton(
                 )
                 coroutineScope.launch {
                     flowerListViewModel.addFlowerEntry(flowerEntry)
+                    onNavigateToDetail(flowerEntry.id)
                 }
             }
         }
@@ -93,9 +95,11 @@ private fun processPhoto(
     photoName: String?
 ): Pair<String, Float> {
 
+    // get file of photo that was just taken and change it to a bitmap
     val photoFile = File(context.applicationContext.filesDir, photoName)
     val photoBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
 
+    // resize the bitmap to match the ML model's image size and make input buffer
     val resizedBitmap = Bitmap.createScaledBitmap(photoBitmap, inputSize, inputSize, true)
     val inputBuffer = ByteBuffer.allocateDirect(4 * inputSize * inputSize * 3).apply {
         order(ByteOrder.nativeOrder())
@@ -114,10 +118,12 @@ private fun processPhoto(
         }
     }
 
+    // load in the model and make an output buffer for results (2D array, 1 row that holds Float array of prediction %)
     val tflite = Interpreter(loadModelFile(context, MODEL_FILE_NAME))
     val outputBuffer = Array(1) { FloatArray(NUM_CLASSES) }
     tflite.run(inputBuffer, outputBuffer)
 
+    //get the index of the max percentage, which will be the prediction
     //val predictedLabel = LABELS[outputBuffer[0].indexOf(outputBuffer[0].maxOrNull()!!)]
     var maxIndex = 0
     for (i in 1 until outputBuffer[0].size) {
