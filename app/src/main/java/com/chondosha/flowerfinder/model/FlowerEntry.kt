@@ -10,6 +10,5 @@ data class FlowerEntry(
     val label: String,
     val percentage: Float,
     val date: Date,
-    val wiki:String? = null,
     val photoFileName:String? = null
 )

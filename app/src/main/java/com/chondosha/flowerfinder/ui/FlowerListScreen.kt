@@ -1,8 +1,5 @@
 package com.chondosha.flowerfinder.ui
 
-
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -92,15 +89,6 @@ fun FlowerList(
                 },
                 modifier = modifier
                     .padding(4.dp)
-                    .drawBehind {
-                        drawLine(
-                            color = Color.Gray,
-                            start = Offset(0f, size.height + 16),
-                            end = Offset(size.width, size.height + 16),
-                            strokeWidth = 1.dp.toPx(),
-                            cap = StrokeCap.Round
-                        )
-                    }
             )
         }
     }
