@@ -1,6 +1,7 @@
 package com.chondosha.flowerfinder.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,8 @@ fun NoMatchScreen(
     modifier: Modifier = Modifier,
     onNavigateBack: () -> Unit
 ) {
+    val noMatchId = if (isSystemInDarkTheme()) R.drawable.no_match_error_dark else R.drawable.no_match_error_light
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -34,7 +37,7 @@ fun NoMatchScreen(
                 modifier = modifier.padding(32.dp)
             ) {
                 Image(
-                    painter = painterResource(R.drawable.no_match_error),
+                    painter = painterResource(noMatchId),
                     contentDescription = null,
                     modifier = modifier
                         .align(Alignment.CenterHorizontally)
@@ -65,3 +68,4 @@ fun NoMatchScreen(
         }
     )
 }
+

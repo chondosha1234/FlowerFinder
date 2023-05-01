@@ -1,19 +1,15 @@
 package com.chondosha.flowerfinder.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chondosha.flowerfinder.FlowerListViewModel
@@ -81,15 +77,25 @@ fun FlowerList(
     LazyColumn(
         modifier = modifier
     ) {
-        items(flowers) { flower ->
-            FlowerEntryCell(
-                flowerEntry = flower,
-                onClickEntry = {
-                    onNavigateToDetail(flower.id)
-                },
-                modifier = modifier
-                    .padding(4.dp)
-            )
+        if (flowers.isEmpty()) {
+            item {
+                Text(
+                    text = "No entries to display",
+                    textAlign = TextAlign.Center,
+                    modifier = modifier.fillMaxSize().fillMaxHeight()
+                )
+            }
+        } else {
+            items(flowers) { flower ->
+                FlowerEntryCell(
+                    flowerEntry = flower,
+                    onClickEntry = {
+                        onNavigateToDetail(flower.id)
+                    },
+                    modifier = modifier
+                        .padding(4.dp)
+                )
+            }
         }
     }
 }

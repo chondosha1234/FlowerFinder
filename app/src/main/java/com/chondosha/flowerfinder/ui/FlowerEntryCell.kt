@@ -19,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
@@ -40,7 +39,7 @@ fun FlowerEntryCell(
         model = flowerEntry.photoFileName?.let {
             File(LocalContext.current.filesDir, it).toUri()
         },
-        placeholder = painterResource(R.drawable.no_match_error)
+        placeholder = painterResource(R.drawable.no_match_error_light)
     )
     Row(
         verticalAlignment = Alignment.CenterVertically,
