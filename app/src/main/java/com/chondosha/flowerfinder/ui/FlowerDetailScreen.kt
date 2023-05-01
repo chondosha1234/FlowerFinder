@@ -95,7 +95,9 @@ fun FlowerDetailScreen(
                     onClick = {
                         onNavigateToWiki("${flower?.label}")
                     },
-                    modifier = modifier.padding(16.dp)
+                    modifier = modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(16.dp)
                 ) {
                     Text(stringResource(R.string.wiki_link))
                 }

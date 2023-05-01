@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -31,6 +33,7 @@ import java.util.*
 fun FlowerEntryCell(
     flowerEntry: FlowerEntry,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.body2,
     onClickEntry: () -> Unit
 ) {
     val imagePainter = rememberAsyncImagePainter(
@@ -63,7 +66,8 @@ fun FlowerEntryCell(
             modifier = modifier.padding(8.dp)
         ) {
             Text(
-                text = stringResource(R.string.flower_label, flowerEntry.label)
+                text = stringResource(R.string.flower_label, flowerEntry.label),
+                style = textStyle
             )
             Text(
                 text = DateFormat.getDateTimeInstance(
@@ -71,6 +75,7 @@ fun FlowerEntryCell(
                     DateFormat.SHORT,
                     Locale.getDefault()
                 ).format(flowerEntry.date),
+                style = textStyle
             )
         }
 
