@@ -32,6 +32,9 @@ fun Navigation(
                 },
                 onNavigateToSettings = {
                     navController.navigate("settings")
+                },
+                onNavigateToNoMatch = {
+                    navController.navigate("no_match")
                 }
             )
         }
@@ -53,7 +56,11 @@ fun Navigation(
         composable(
             "no_match"
         ) {
-            NoMatchScreen()
+            NoMatchScreen(
+                onNavigateBack = {
+                    navController.navigate("flower_list")
+                }
+            )
         }
         composable(
             "wiki/{url}",

@@ -2,10 +2,22 @@
     <string name="app_name">FlowerFinder</string>
 
     <string name="flower_label">Type of flower: %1$s </string>
+    <string name="wiki_description">For more information about this type of Flower check out the wikipedia page:</string>
+    <string name="wiki_link">Go To Wiki</string>
 
-    <string name="about_section">This is the about section</string>
+    <string name="about">About</string>
+    <string name="about_section">
+        This application utilizes a trained neural network model to recognize photos of different flowers.
+        At the moment there are currently 5 flower categories in the model.
+        The plants are generally selected for their appearance in the North East United States, in order to be tested and applicable to the developer\'s life.
+        As of now this is mainly a proof of concept project, but could potentially be expanded to include more flowers from all over the United States,
+        or to include other plants such as trees.</string>
+    <string name="settings">Settings</string>
     <string name="change_themes">Change Themes</string>
     <string name="change_notifications">Change notification settings</string>
-    <string name="no_match">There was no flower found in the picture.  Either there is actually no flower or there was a failure in the machine.
-    You can try to take another picture closer or more clearly, or report it as a problem!</string>
+    <string name="no_match">
+        There was no flower found in the picture.
+        Either there is actually no flower or there was a failure in the machine.
+        You can try to take another picture closer or more clearly, or report it as a problem!
+    </string>
 </resources>

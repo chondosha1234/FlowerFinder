@@ -6,12 +6,16 @@ import android.graphics.BitmapFactory
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chondosha.flowerfinder.FlowerListViewModel
@@ -38,6 +42,7 @@ private val LABELS = listOf("Daisy", "Dandelion", "Rose", "Sunflower", "Tulip")
 fun CameraButton(
     modifier: Modifier = Modifier,
     onNavigateToDetail: (UUID) -> Unit,
+    onNavigateToNoMatch: () -> Unit,
     flowerListViewModel: FlowerListViewModel = viewModel(
         factory = FlowerListViewModelFactory(LocalRepository.current)
     )
@@ -56,22 +61,27 @@ fun CameraButton(
 
                 val (predictedLabel, percentage) = processPhoto(context, photoName)
 
-                val flowerEntry = FlowerEntry(
-                    id = UUID.randomUUID(),
-                    label = predictedLabel,
-                    percentage = percentage,
-                    date = Date(),
-                    photoFileName = photoName
-                )
-                coroutineScope.launch {
-                    flowerListViewModel.addFlowerEntry(flowerEntry)
-                    onNavigateToDetail(flowerEntry.id)
+                if (percentage >= 60.00f) {
+                    val flowerEntry = FlowerEntry(
+                        id = UUID.randomUUID(),
+                        label = predictedLabel,
+                        percentage = percentage,
+                        date = Date(),
+                        photoFileName = photoName
+                    )
+                    coroutineScope.launch {
+                        flowerListViewModel.addFlowerEntry(flowerEntry)
+                        onNavigateToDetail(flowerEntry.id)
+                    }
+                } else {
+                    onNavigateToNoMatch()
                 }
             }
         }
     )
 
     Button(
+        shape = CircleShape,
         onClick = {
             photoName = "IMG_${Date()}.JPG"
             val photoFile = File(context.applicationContext.filesDir, photoName)
@@ -81,11 +91,16 @@ fun CameraButton(
                 photoFile
             )
             launcher.launch(photoUri)
-        }
+        },
+        modifier = modifier.padding(32.dp)
     ) {
         Image(
             painter = painterResource(R.drawable.camera_button),
-            contentDescription = null)
+            contentDescription = null,
+            modifier = modifier
+                .padding(16.dp)
+                .size(32.dp)
+        )
     }
 }
 

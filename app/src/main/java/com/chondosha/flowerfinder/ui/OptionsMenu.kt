@@ -4,6 +4,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.chondosha.flowerfinder.R
 
 
@@ -31,12 +32,12 @@ fun OptionsMenu(
         DropdownMenuItem(onClick = {
             onNavigateToAbout()
         }) {
-            Text("About")
+            Text(stringResource(R.string.about))
         }
         DropdownMenuItem(onClick = {
             onNavigateToSettings()
         }) {
-            Text("Settings")
+            Text(stringResource(R.string.settings))
         }
     }
 }

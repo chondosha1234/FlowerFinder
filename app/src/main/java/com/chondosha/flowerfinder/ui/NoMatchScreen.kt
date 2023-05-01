@@ -2,19 +2,25 @@ package com.chondosha.flowerfinder.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.chondosha.flowerfinder.R
 
 @Composable
 fun NoMatchScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -25,14 +31,36 @@ fun NoMatchScreen(
         },
         content = { padding ->
             Column(
-                modifier = modifier.padding(padding)
+                modifier = modifier.padding(32.dp)
             ) {
                 Image(
                     painter = painterResource(R.drawable.no_match_error),
-                    contentDescription = null)
-                Text(
-                    text = stringResource(R.string.no_match)
+                    contentDescription = null,
+                    modifier = modifier
+                        .align(Alignment.CenterHorizontally)
+                        .size(128.dp)
                 )
+                Text(
+                    text = stringResource(R.string.no_match),
+                    modifier = modifier.padding(16.dp)
+                )
+                Row(
+                    modifier = modifier
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    Button(
+                        onClick = { onNavigateBack() },
+                        modifier= modifier.padding(8.dp)
+                    ) {
+                        Text(text = "Go Back")
+                    }
+                    Button(
+                        onClick = { /* todo */ },
+                        modifier = modifier.padding(8.dp)
+                    ) {
+                        Text(text = "Report issue")
+                    }
+                }
             }
         }
     )

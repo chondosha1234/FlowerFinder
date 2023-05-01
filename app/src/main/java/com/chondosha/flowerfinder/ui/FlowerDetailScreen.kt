@@ -87,7 +87,7 @@ fun FlowerDetailScreen(
                 )
 
                 Text(
-                    text = "For more information about this type of Flower check out the wikipedia page:",
+                    text = stringResource(R.string.wiki_description),
                     modifier = modifier.padding(16.dp)
                 )
 
@@ -97,7 +97,7 @@ fun FlowerDetailScreen(
                     },
                     modifier = modifier.padding(16.dp)
                 ) {
-                    Text(text = "Go To Wiki")
+                    Text(stringResource(R.string.wiki_link))
                 }
             }
         }
