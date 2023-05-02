@@ -82,7 +82,7 @@ fun FlowerDetailScreen(
                 )
 
                 Text(
-                    text = "There is a ${flower?.percentage}% chance that this picture shows a ${flower?.label}",
+                    text = "There is a ${flower?.percentage?.times(100)}% chance that this picture shows a ${flower?.label}",
                     modifier = modifier.padding(16.dp)
                 )
 

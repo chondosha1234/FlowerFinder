@@ -3,6 +3,7 @@ package com.chondosha.flowerfinder.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -32,11 +33,14 @@ import java.nio.ByteOrder
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
 import java.util.*
+import kotlin.math.exp
 
 private const val inputSize = 180
 private const val NUM_CLASSES = 5
 private const val MODEL_FILE_NAME = "model.tflite"
 private val LABELS = listOf("Daisy", "Dandelion", "Rose", "Sunflower", "Tulip")
+
+private const val EXP_MAX_INPUT = 40f
 
 @Composable
 fun CameraButton(
@@ -61,7 +65,7 @@ fun CameraButton(
 
                 val (predictedLabel, percentage) = processPhoto(context, photoName)
 
-                if (percentage >= 60.00f) {
+                if (percentage >= 00.00f) {
                     val flowerEntry = FlowerEntry(
                         id = UUID.randomUUID(),
                         label = predictedLabel,
@@ -138,16 +142,21 @@ private fun processPhoto(
     val outputBuffer = Array(1) { FloatArray(NUM_CLASSES) }
     tflite.run(inputBuffer, outputBuffer)
 
+    val probabilities = softmax(outputBuffer[0])
+
+    for (i in 0 until outputBuffer[0].size) {
+        Log.d("Model", "Percent for category ${LABELS[i]} is ${probabilities[i]}")
+    }
+
     //get the index of the max percentage, which will be the prediction
-    //val predictedLabel = LABELS[outputBuffer[0].indexOf(outputBuffer[0].maxOrNull()!!)]
     var maxIndex = 0
-    for (i in 1 until outputBuffer[0].size) {
-        if (outputBuffer[0][i] > outputBuffer[0][maxIndex]) {
+    for (i in probabilities.indices) {
+        if (probabilities[i] > probabilities[maxIndex]) {
             maxIndex = i
         }
     }
     val predictedLabel = LABELS[maxIndex]
-    val percentage = outputBuffer[0][maxIndex]
+    val percentage = probabilities[maxIndex]
     return Pair(predictedLabel, percentage)
 }
 
@@ -161,4 +170,21 @@ private fun loadModelFile(
     val startOffset = fileDescriptor.startOffset
     val declaredLength = fileDescriptor.declaredLength
     return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
+}
+
+private fun softmax(logits: FloatArray): FloatArray {
+    val maxLogit = logits.maxOrNull() ?: 0f
+    val logitsExp = logits.map { exp(it - maxLogit) }
+    val sumExp = logitsExp.sum()
+    return logitsExp.map { it / sumExp }.toFloatArray()
+}
+
+// Exponential function with added stability to avoid overflow errors
+private fun exp(x: Float): Float {
+    val EXP_MAX_OUTPUT = exp(EXP_MAX_INPUT.toDouble()).toFloat()
+    return if (x > EXP_MAX_INPUT) {
+        EXP_MAX_OUTPUT
+    } else {
+        exp(x.toDouble()).toFloat()
+    }
 }
