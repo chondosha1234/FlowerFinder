@@ -65,7 +65,7 @@ fun CameraButton(
 
                 val (predictedLabel, percentage) = processPhoto(context, photoName)
 
-                if (percentage >= 00.00f) {
+                if (percentage >= 0.60f) {
                     val flowerEntry = FlowerEntry(
                         id = UUID.randomUUID(),
                         label = predictedLabel,

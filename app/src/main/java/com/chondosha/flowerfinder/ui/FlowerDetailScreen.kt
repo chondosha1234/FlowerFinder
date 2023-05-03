@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +38,8 @@ fun FlowerDetailScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
+    var deletePressed by remember { mutableStateOf(false) }
+
     val imagePainter = rememberAsyncImagePainter(
         model = flower?.photoFileName?.let {
             File(LocalContext.current.filesDir, it).toUri()
@@ -54,16 +53,44 @@ fun FlowerDetailScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.app_name)) },
                 actions = {
-                    IconButton(onClick = {
-                        coroutineScope.launch {
-                            flower?.let { flowerDetailViewModel.deleteFlowerEntry(it) }
-                            onNavigateToList()
-                        }
-                    }) {
-                        Icon(
-                            painter = painterResource(R.drawable.delete_button),
-                            contentDescription = "Delete"
+                    if (deletePressed) {
+                        AlertDialog(
+                            onDismissRequest = { deletePressed = false },
+                            title = {
+                                Text(text = stringResource(R.string.confirm_text))
+                            },
+                            confirmButton = {
+                                TextButton(
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            flower?.let { flowerDetailViewModel.deleteFlowerEntry(it) }
+                                            onNavigateToList()
+                                        }
+                                        deletePressed = false
+                                    }
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.confirm)
+                                    )
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(
+                                    onClick = { deletePressed = false }
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.deny)
+                                    )
+                                }
+                            }
                         )
+                    } else {
+                        IconButton(onClick = { deletePressed = true }) {
+                            Icon(
+                                painter = painterResource(R.drawable.delete_button),
+                                contentDescription = "Delete"
+                            )
+                        }
                     }
                 }
             )
